@@ -1,18 +1,19 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::CheckLib;
-BEGIN {
-  $Dist::Zilla::Plugin::CheckLib::AUTHORITY = 'cpan:ETHER';
-}
-# git description: c9935dc
-$Dist::Zilla::Plugin::CheckLib::VERSION = '0.001';
+# git description: v0.001-17-g0133050
+$Dist::Zilla::Plugin::CheckLib::VERSION = '0.002';
 # ABSTRACT: Require that our distribution has a particular library available
+# KEYWORDS: distribution installation require compiler library header resource
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
-with 'Dist::Zilla::Role::InstallTool',
+with
+    'Dist::Zilla::Role::FileMunger',
+    'Dist::Zilla::Role::InstallTool',
     'Dist::Zilla::Role::PrereqSource',
 ;
+use Scalar::Util 'blessed';
 use namespace::autoclean;
 
 my @list_options = qw(header incpath lib libpath);
@@ -34,20 +35,50 @@ has \@string_options => (
     is => 'ro', isa => 'Str',
 );
 
-sub register_prereqs {
+around dump_config => sub
+{
+    my ($orig, $self) = @_;
+    my $config = $self->$orig;
+
+    $config->{+__PACKAGE__} = {
+        ( map { $_ => [ $self->$_ ] } @list_options ),
+        ( map { $_ => $self->$_ } @string_options ),
+    };
+
+    return $config;
+};
+
+sub register_prereqs
+{
     my $self = shift;
     $self->zilla->register_prereqs(
         {
           phase => 'configure',
           type  => 'requires',
         },
-        'Devel::CheckLib' => '0',
+        'Devel::CheckLib' => '0.9',
     );
+}
+
+my %files;
+sub munge_files
+{
+    my $self = shift;
+
+    my @mfpl = grep { $_->name eq 'Makefile.PL' or $_->name eq 'Build.PL' } @{ $self->zilla->files };
+    for my $mfpl (@mfpl)
+    {
+        $self->log_debug('munging ' . $mfpl->name . ' in file gatherer phase');
+        $files{$mfpl->name} = $mfpl;
+        $self->_munge_file($mfpl);
+    }
+    return;
 }
 
 # XXX - this should really be a separate phase that runs after InstallTool -
 # until then, all we can do is die if we are run too soon
-sub setup_installer {
+sub setup_installer
+{
     my $self = shift;
 
     my @mfpl = grep { $_->name eq 'Makefile.PL' or $_->name eq 'Build.PL' } @{ $self->zilla->files };
@@ -56,30 +87,49 @@ sub setup_installer {
 
     for my $mfpl (@mfpl)
     {
-        # build a list of tuples: field name => string
-        my @options = (
-            (map {
-                my @stuff = map { '\'' . $_ . '\'' } $self->$_;
-                @stuff
-                    ? [ $_ => @stuff > 1 ? ('[ ' . join(', ', @stuff) . ' ]') : $stuff[0] ]
-                    : ()
-            } @list_options),
-            (map {
-                $self->$_
-                    ? [ $_ => '\'' . $self->$_ . '\'' ]
-                    : ()
-            } @string_options),
-        );
-
-        my $content = "use Devel::CheckLib;\n"
-            . "check_lib_or_exit(\n"
-            . join('',
-                    map { '    ' . $_->[0] . ' => ' . $_->[1] . ",\n" } @options
-                )
-            . ");\n\n";
-        $mfpl->content($content . $mfpl->content);
+        next if exists $files{$mfpl->name};
+        $self->log_debug('munging ' . $mfpl->name . ' in setup_installer phase');
+        $self->_munge_file($mfpl);
     }
     return;
+}
+
+sub _munge_file
+{
+    my ($self, $file) = @_;
+
+    my $orig_content = $file->content;
+    $self->log_fatal('could not find position in ' . $file->name . ' to modify!')
+        if not $orig_content =~ m/use strict;\nuse warnings;\n\n/g;
+
+    my $pos = pos($orig_content);
+
+    # build a list of tuples: field name => string
+    my @options = (
+        (map {
+            my @stuff = map { '\'' . $_ . '\'' } $self->$_;
+            @stuff
+                ? [ $_ => @stuff > 1 ? ('[ ' . join(', ', @stuff) . ' ]') : $stuff[0] ]
+                : ()
+        } @list_options),
+        (map {
+            defined $self->$_
+                ? [ $_ => '\'' . $self->$_ . '\'' ]
+                : ()
+        } @string_options),
+    );
+
+    $file->content(
+        substr($orig_content, 0, $pos)
+        . "# inserted by " . blessed($self) . ' ' . ($self->VERSION || '<self>') . "\n"
+        . "use Devel::CheckLib;\n"
+        . "check_lib_or_exit(\n"
+        . join('',
+                map { '    ' . $_->[0] . ' => ' . $_->[1] . ",\n" } @options
+            )
+        . ");\n\n"
+        . substr($orig_content, $pos)
+    );
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -90,15 +140,13 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge incpaths irc
-
 =head1 NAME
 
 Dist::Zilla::Plugin::CheckLib - Require that our distribution has a particular library available
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -116,7 +164,7 @@ asserts that a particular library and/or header is available.  If it is not
 available, the program exits with a status of zero, which on a
 L<CPAN Testers|cpantesters.org> machine will result in a NA result.
 
-=for Pod::Coverage mvp_multivalue_args register_prereqs setup_installer
+=for Pod::Coverage mvp_multivalue_args register_prereqs munge_files setup_installer
 
 =head1 CONFIGURATION OPTIONS
 
@@ -140,6 +188,12 @@ A L<ExtUtils::MakeMaker>-style space-separated list of libraries (each preceded 
 =head2 C<debug>
 
 If true, emit information during processing that can be used for debugging.
+B<Note>: as this is an arbitrary string that is inserted directly into
+F<Makefile.PL> or F<Build.PL>, this can be any arbitrary expression,
+for example:
+
+    [CheckLib]
+    debug = $ENV{AUTOMATED_TESTING} || $^O eq 'MSWin32'
 
 =head2 C<header>
 
@@ -151,9 +205,13 @@ An additional path to search for headers. Can be used more than once.
 
 =head2 C<INC>
 
+=for stopwords incpaths
+
 A L<ExtUtils::MakeMaker>-style space-separated list of incpaths, each preceded by C<-I>.
 
 =head1 SUPPORT
+
+=for stopwords irc
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-CheckLib>
 (or L<bug-Dist-Zilla-Plugin-CheckLib@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-CheckLib@rt.cpan.org>).
