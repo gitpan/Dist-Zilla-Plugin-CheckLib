@@ -76,7 +76,7 @@ cmp_deeply(
             configure => {
                 requires => {
                     'Devel::CheckLib' => '0.9',
-                    'ExtUtils::MakeMaker' => ignore,    # populated by InstallerTool
+                    'ExtUtils::MakeMaker' => ignore,    # populated by [MakeMaker]
                 },
             },
             # build => ignore, # if using ModuleBuild

@@ -36,7 +36,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::CheckLib:
     file: lib/Dist/Zilla/Plugin/CheckLib.pm
-    version: '0.002'
+    version: '0.003'
 requires:
   Devel::CheckLib: '0'
   Dist::Zilla::Plugin::MetaResources: '4.300039'
@@ -46,7 +46,7 @@ requires:
   Moose: '0'
   Scalar::Util: '0'
   namespace::autoclean: '0'
-  perl: '5.006'
+  perl: '5.009005'
   strict: '0'
   warnings: '0'
 resources:
@@ -55,7 +55,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-CheckLib
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-CheckLib
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-CheckLib.git
-version: '0.002'
+version: '0.003'
 x_Dist_Zilla:
   perl:
     version: '5.021003'
@@ -254,6 +254,13 @@ x_Dist_Zilla:
       name: '@Author::ETHER/PkgVersion'
       version: '5.020'
     -
+      class: Dist::Zilla::Plugin::AuthorityFromModule
+      config:
+        Dist::Zilla::Plugin::AuthorityFromModule:
+          module: Dist::Zilla::Plugin::CheckLib
+      name: '@Author::ETHER/AuthorityFromModule'
+      version: '0.002'
+    -
       class: Dist::Zilla::Plugin::Authority
       name: '@Author::ETHER/Authority'
       version: '1.006'
@@ -342,7 +349,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: '0.142250'
+      version: '0.142470'
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -371,7 +378,7 @@ x_Dist_Zilla:
           inherit_version: '1'
           meta_noindex: '1'
       name: '@Author::ETHER/MetaProvides::Package'
-      version: '2.001001'
+      version: '2.001002'
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::ETHER/MetaConfig'
@@ -557,7 +564,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.002
+          tag: v0.003
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -612,6 +619,10 @@ x_Dist_Zilla:
       name: DevelopRequires
       version: '5.020'
     -
+      class: Dist::Zilla::Plugin::DynamicPrereqs
+      name: DynamicPrereqs
+      version: '0.005'
+    -
       class: Dist::Zilla::Plugin::Test::CleanNamespaces
       config:
         Dist::Zilla::Plugin::Test::CleanNamespaces:
@@ -619,10 +630,6 @@ x_Dist_Zilla:
           skips: []
       name: Test::CleanNamespaces
       version: '0.006'
-    -
-      class: Dist::Zilla::Plugin::DynamicPrereqs
-      name: DynamicPrereqs
-      version: '0.005'
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
@@ -665,3 +672,5 @@ x_Dist_Zilla:
       is_trial: '0'
     version: '5.020'
 x_authority: cpan:ETHER
+x_authority_from_module: Dist::Zilla::Plugin::CheckLib
+x_permissions_from_module: Dist::Zilla::Plugin::CheckLib

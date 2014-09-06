@@ -6,11 +6,12 @@ do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.072'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.073'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5',
                                       'Dist::Zilla::Plugin::Authority' => '0',
+                                      'Dist::Zilla::Plugin::AuthorityFromModule' => '0.002',
                                       'Dist::Zilla::Plugin::AutoMetaResources' => '0',
                                       'Dist::Zilla::Plugin::AutoPrereqs' => '0',
                                       'Dist::Zilla::Plugin::CheckIssues' => '0',
@@ -75,7 +76,7 @@ do { my $x = {
                                       'Dist::Zilla::Plugin::Test::Pod::No404s' => '0',
                                       'Dist::Zilla::Plugin::Test::PodSpelling' => '0',
                                       'Dist::Zilla::Plugin::Test::Portability' => '0',
-                                      'Dist::Zilla::Plugin::Test::ReportPrereqs' => '0',
+                                      'Dist::Zilla::Plugin::Test::ReportPrereqs' => '0.019',
                                       'Dist::Zilla::Plugin::TestRelease' => '0',
                                       'Dist::Zilla::Plugin::UploadToCPAN' => '0',
                                       'Dist::Zilla::PluginBundle::Author::ETHER' => '0.058',
@@ -105,7 +106,7 @@ do { my $x = {
                                       'Moose' => '0',
                                       'Scalar::Util' => '0',
                                       'namespace::autoclean' => '0',
-                                      'perl' => '5.006',
+                                      'perl' => '5.009005',
                                       'strict' => '0',
                                       'warnings' => '0'
                                     }

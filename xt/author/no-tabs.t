@@ -14,6 +14,8 @@ my @files = (
     't/02-module-build.t',
     't/03-module-build-tiny.t',
     't/04-makemaker-awesome.t',
+    't/05-makemaker-fallback.t',
+    't/06-modulebuildtiny-fallback.t',
     'xt/author/00-compile.t',
     'xt/author/clean-namespaces.t',
     'xt/author/no-tabs.t',

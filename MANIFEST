@@ -16,6 +16,8 @@ t/01-basic.t
 t/02-module-build.t
 t/03-module-build-tiny.t
 t/04-makemaker-awesome.t
+t/05-makemaker-fallback.t
+t/06-modulebuildtiny-fallback.t
 weaver.ini
 xt/author/00-compile.t
 xt/author/clean-namespaces.t

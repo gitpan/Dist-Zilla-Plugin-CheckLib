@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-CheckLib
 
+0.003     2014-09-06 02:31:19Z
+          - now also testing interaction with [MakeMaker::Fallback],
+            [ModuleBuildTiny::Fallback] -- the latter requiring fixes
+
 0.002     2014-09-04 06:34:59Z
           - insertion of check_lib_or_exit arguments updated, so
             defined-but-false values are not skipped

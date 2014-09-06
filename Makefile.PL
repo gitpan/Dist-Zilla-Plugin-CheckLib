@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use 5.006;
+use 5.009005;
 
 use ExtUtils::MakeMaker ;
 
@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     "Test::Requires" => 0,
     "if" => 0
   },
-  "VERSION" => "0.002",
+  "VERSION" => "0.003",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -73,6 +73,8 @@ my %FallbackPrereqs = (
 
 $WriteMakefileArgs{PREREQ_PM}{'Dist::Zilla::Plugin::ModuleBuildTiny'} = '0.007'
 if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny; 1';
+$WriteMakefileArgs{PREREQ_PM}{'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback'} = '0.006'
+if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny::Fallback; 1';
 
 
 
