@@ -63,6 +63,10 @@ my @include = qw(
   CPAN::Meta::Validator
   Module::Build
   Module::Build::Tiny
+  Dist::Zilla::Plugin::ModuleBuildTiny
+  Dist::Zilla::Plugin::MakeMaker::Awesome
+  Dist::Zilla::Plugin::MakeMaker::Fallback
+  Dist::Zilla::Plugin::ModuleBuildTiny::Fallback
 );
 
 my @exclude = qw(

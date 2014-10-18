@@ -72,15 +72,15 @@ like(
 cmp_deeply(
     $tzil->distmeta,
     superhashof({
-        prereqs => {
+        prereqs => superhashof({
             configure => {
                 requires => {
                     'Devel::CheckLib' => '0.9',
                     'ExtUtils::MakeMaker' => ignore,    # populated by [MakeMaker]
                 },
             },
-            # build => ignore, # if using ModuleBuild
-        },
+            # build prereqs go here
+        }),
         x_Dist_Zilla => superhashof({
             plugins => supersetof(
                 {

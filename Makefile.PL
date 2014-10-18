@@ -42,7 +42,7 @@ my %WriteMakefileArgs = (
     "Test::Requires" => 0,
     "if" => 0
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -71,10 +71,11 @@ my %FallbackPrereqs = (
   "warnings" => 0
 );
 
+# inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.008
 $WriteMakefileArgs{PREREQ_PM}{'Dist::Zilla::Plugin::ModuleBuildTiny'} = '0.007'
-if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny; 1';
+  if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny; 1';
 $WriteMakefileArgs{PREREQ_PM}{'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback'} = '0.006'
-if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny::Fallback; 1';
+  if eval 'use Dist::Zilla::Plugin::ModuleBuildTiny::Fallback; 1';
 
 
 
@@ -88,5 +89,6 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
   unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
 
 WriteMakefile(%WriteMakefileArgs);
+
 
 

@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-CheckLib
 
+0.004     2014-10-18 04:41:46Z
+          - bump optional dependency on [MakeMaker::Awesome] to avoid old bug
+            with loaded modules
+
 0.003     2014-09-06 02:31:19Z
           - now also testing interaction with [MakeMaker::Fallback],
             [ModuleBuildTiny::Fallback] -- the latter requiring fixes

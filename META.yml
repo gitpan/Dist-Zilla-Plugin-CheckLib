@@ -15,7 +15,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: '0'
 dynamic_config: 1
-generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142060'
+generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142690'
 keywords:
   - distribution
   - installation
@@ -36,7 +36,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::CheckLib:
     file: lib/Dist/Zilla/Plugin/CheckLib.pm
-    version: '0.003'
+    version: '0.004'
 requires:
   Devel::CheckLib: '0'
   Dist::Zilla::Plugin::MetaResources: '4.300039'
@@ -55,7 +55,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-CheckLib
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-CheckLib
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-CheckLib.git
-version: '0.003'
+version: '0.004'
 x_Dist_Zilla:
   perl:
     version: '5.021003'
@@ -78,7 +78,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::NextVersion'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -90,7 +90,7 @@ x_Dist_Zilla:
           phase: build
           skip: []
       name: '@Author::ETHER/stale modules, build'
-      version: '0.024'
+      version: '0.028'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -101,7 +101,7 @@ x_Dist_Zilla:
           phase: release
           skip: []
       name: '@Author::ETHER/stale modules, release'
-      version: '0.024'
+      version: '0.028'
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -126,7 +126,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::GatherDir'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Author::ETHER/MetaYAML'
@@ -175,7 +175,7 @@ x_Dist_Zilla:
             - '@Author::ETHER/Examples'
           skips: []
       name: '@Author::ETHER/Test::Compile'
-      version: '2.046'
+      version: '2.051'
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -458,9 +458,17 @@ x_Dist_Zilla:
       config:
         Dist::Zilla::Plugin::Run::Role::Runner:
           run:
-            - "bash -c \"if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi\""
-      name: '@Author::ETHER/Run::AfterBuild'
-      version: '0.023'
+            - "bash -c \"if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi\""
+      name: '@Author::ETHER/.ackrc'
+      version: '0.026'
+    -
+      class: Dist::Zilla::Plugin::Run::AfterBuild
+      config:
+        Dist::Zilla::Plugin::Run::Role::Runner:
+          eval:
+            - "if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }"
+      name: '@Author::ETHER/.latest'
+      version: '0.026'
     -
       class: Dist::Zilla::Plugin::CheckStrictVersion
       name: '@Author::ETHER/CheckStrictVersion'
@@ -477,7 +485,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/initial check'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       config:
@@ -516,7 +524,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/after tests'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::CheckIssues
       name: '@Author::ETHER/CheckIssues'
@@ -533,10 +541,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Run::AfterRelease
       config:
         Dist::Zilla::Plugin::Run::Role::Runner:
-          run:
-            - 'rm -f README.md'
+          eval:
+            - "unlink 'README.md'"
       name: '@Author::ETHER/remove old READMEs'
-      version: '0.023'
+      version: '0.026'
     -
       class: Dist::Zilla::Plugin::Git::Commit
       config:
@@ -557,21 +565,21 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Commit'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::Git::Tag
       config:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.003
+          tag: v0.004
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Tag'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
@@ -586,14 +594,14 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Push'
-      version: '2.023'
+      version: '2.025'
     -
       class: Dist::Zilla::Plugin::Run::AfterRelease
       config:
         Dist::Zilla::Plugin::Run::Role::Runner:
           run: REDACTED
       name: '@Author::ETHER/install release'
-      version: '0.023'
+      version: '0.026'
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Author::ETHER/ConfirmRelease'
@@ -621,7 +629,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::DynamicPrereqs
       name: DynamicPrereqs
-      version: '0.005'
+      version: '0.008'
     -
       class: Dist::Zilla::Plugin::Test::CleanNamespaces
       config:
