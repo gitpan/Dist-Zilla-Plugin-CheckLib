@@ -61,8 +61,10 @@ sub _merge_prereqs {
 
 my @include = qw(
   CPAN::Meta::Validator
+  ExtUtils::MakeMaker
   Module::Build
   Module::Build::Tiny
+  Dist::Zilla::Plugin::MakeMaker
   Dist::Zilla::Plugin::ModuleBuildTiny
   Dist::Zilla::Plugin::MakeMaker::Awesome
   Dist::Zilla::Plugin::MakeMaker::Fallback

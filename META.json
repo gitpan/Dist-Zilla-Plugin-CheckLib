@@ -164,7 +164,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::CheckLib" : {
          "file" : "lib/Dist/Zilla/Plugin/CheckLib.pm",
-         "version" : "0.005"
+         "version" : "0.006"
       }
    },
    "release_status" : "stable",
@@ -182,7 +182,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.005",
+   "version" : "0.006",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.021005"
@@ -729,7 +729,7 @@
                }
             },
             "name" : "@Author::ETHER/.ackrc",
-            "version" : "0.026"
+            "version" : "0.027"
          },
          {
             "class" : "Dist::Zilla::Plugin::Run::AfterBuild",
@@ -741,7 +741,7 @@
                }
             },
             "name" : "@Author::ETHER/.latest",
-            "version" : "0.026"
+            "version" : "0.027"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckStrictVersion",
@@ -853,7 +853,7 @@
                }
             },
             "name" : "@Author::ETHER/remove old READMEs",
-            "version" : "0.026"
+            "version" : "0.027"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Commit",
@@ -889,7 +889,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v0.005",
+                  "tag" : "v0.006",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"
@@ -930,7 +930,7 @@
                }
             },
             "name" : "@Author::ETHER/install release",
-            "version" : "0.026"
+            "version" : "0.027"
          },
          {
             "class" : "Dist::Zilla::Plugin::ConfirmRelease",

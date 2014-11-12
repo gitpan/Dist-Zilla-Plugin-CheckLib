@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::CheckLib;
-# git description: v0.004-1-ge40e01e
-$Dist::Zilla::Plugin::CheckLib::VERSION = '0.005';
+# git description: v0.005-3-g4a12dcd
+$Dist::Zilla::Plugin::CheckLib::VERSION = '0.006';
 # ABSTRACT: Require that our distribution has a particular library available
 # KEYWORDS: distribution installation require compiler library header resource
 # vim: set ts=8 sw=4 tw=78 et :
@@ -146,7 +146,7 @@ Dist::Zilla::Plugin::CheckLib - Require that our distribution has a particular l
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
